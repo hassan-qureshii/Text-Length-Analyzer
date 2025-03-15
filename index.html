@@ -1,0 +1,44 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Analyzer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Analyze your text in real-time.</h1>
+        <textarea id="textInput" rows="5" placeholder="Start typing here... (or paste your text)"></textarea>
+        <div class="options">
+            <div>
+                <input type="checkbox" id="excludeSpaces">
+                <label for="excludeSpaces">Exclude Spaces</label>
+            </div>
+
+            <div>
+                <input type="checkbox" id="setCharacterLimit">
+                <label for="setCharacterLimit">Set Character Limit</label>
+            </div>
+
+            <div class="reading-time" id="readingTime">Approx.reading time: 0 minute</div>
+        </div>
+
+        <div class="stats">
+            <div class="stat purple">
+                <div class="value" id="totalCharacters">00</div>
+                <div class="label">Total Characters</div>
+            </div>
+            <div class="stat yellow">
+                <div class="value" id="wordCount">00</div>
+                <div class="label">Word Count</div>
+            </div>
+            <div class="stat orange">
+                <div class="value" id="sentenceCount">00</div>
+                <div class="label">Sentence Count</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
