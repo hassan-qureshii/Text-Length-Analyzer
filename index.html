@@ -1,44 +1,158 @@
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Text Analyzer</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Analyze your text in real-time.</h1>
-        <textarea id="textInput" rows="5" placeholder="Start typing here... (or paste your text)"></textarea>
-        <div class="options">
-            <div>
-                <input type="checkbox" id="excludeSpaces">
-                <label for="excludeSpaces">Exclude Spaces</label>
-            </div>
 
-            <div>
-                <input type="checkbox" id="setCharacterLimit">
-                <label for="setCharacterLimit">Set Character Limit</label>
-            </div>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-            <div class="reading-time" id="readingTime">Approx.reading time: 0 minute</div>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Custom Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Poppins", "sans-serif"],
+            },
+            colors: {
+              lightbg: "#f3f8fc",
+              lighttext: "#083b75",
+              purpleglass: "#073467",
+              sunny: "#9b59b6",
+              sunset: "#073467",
+              darkbg: "#1a1a1a",
+              darktext: "#f3f8fc",
+            },
+          },
+        },
+        darkMode: "class",
+      };
+    </script>
+  </head>
+
+  <body
+    class="bg-lightbg text-lighttext font-sans min-h-screen transition-colors duration-500 ease-in-out dark:bg-darkbg dark:text-darktext"
+  >
+    <!-- Header -->
+    <header
+      class="w-full flex justify-between items-center px-6 py-4 bg-transparent"
+    >
+      <h1
+        class="text-2xl sm:text-3xl font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#9b59b6] to-[#073467]"
+      >
+        Text Analyzer
+      </h1>
+
+      <button
+        id="toggleDark"
+        class="px-4 py-2 rounded-full bg-purpleglass text-white text-sm font-semibold hover:opacity-90 transition"
+      >
+        🌙 Dark Mode
+      </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex items-center justify-center p-6">
+      <div
+        class="max-w-3xl w-full text-center space-y-6 mt-8 animate-fadeIn"
+      >
+        <!-- Page Title -->
+        <h2
+          class="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#9b59b6] to-[#073467]"
+        >
+          Analyze your text in real-time
+        </h2>
+
+        <!-- Textarea -->
+        <textarea
+          id="textInput"
+          rows="6"
+          placeholder="Start typing here... (or paste your text)"
+          class="w-full h-52 bg-white dark:bg-gray-800 dark:text-white text-lighttext p-4 rounded-xl border border-gray-300 dark:border-gray-700 focus:outline-none transition-all duration-300 ease-in-out resize-none shadow-md placeholder-gray-400"
+        ></textarea>
+
+        <!-- Options -->
+        <div
+          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm"
+        >
+          <div class="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="excludeSpaces"
+              class="size-4 accent-[#9b59b6]"
+            />
+            <label for="excludeSpaces">Exclude Spaces</label>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="setCharacterLimit"
+              class="size-4 accent-[#9b59b6]"
+            />
+            <label for="setCharacterLimit">Set Character Limit</label>
+          </div>
+
+          <div id="readingTime" class="text-gray-500 dark:text-gray-400 italic">
+            Approx. reading time: 0 minute
+          </div>
         </div>
 
-        <div class="stats">
-            <div class="stat purple">
-                <div class="value" id="totalCharacters">00</div>
-                <div class="label">Total Characters</div>
-            </div>
-            <div class="stat yellow">
-                <div class="value" id="wordCount">00</div>
-                <div class="label">Word Count</div>
-            </div>
-            <div class="stat orange">
-                <div class="value" id="sentenceCount">00</div>
-                <div class="label">Sentence Count</div>
-            </div>
+        <!-- Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+          <div
+            class="stat-card bg-purpleglass hover:scale-105 transition-transform duration-300 rounded-xl p-4 shadow-md text-white focus:outline-none"
+          >
+            <div id="totalCharacters" class="text-3xl font-bold">00</div>
+            <div class="text-sm opacity-90">Total Characters</div>
+          </div>
+
+          <div
+            class="stat-card bg-[#9b59b6] text-white hover:scale-105 transition-transform duration-300 rounded-xl p-4 shadow-md focus:outline-none"
+          >
+            <div id="wordCount" class="text-3xl font-bold">00</div>
+            <div class="text-sm opacity-90">Word Count</div>
+          </div>
+
+          <div
+            class="stat-card bg-purpleglass text-white hover:scale-105 transition-transform duration-300 rounded-xl p-4 shadow-md focus:outline-none"
+          >
+            <div id="sentenceCount" class="text-3xl font-bold">00</div>
+            <div class="text-sm opacity-90">Sentence Count</div>
+          </div>
         </div>
-    </div>
+
+        <!-- Letter Density -->
+        <div
+          id="letterDensity"
+          class="text-left text-gray-600 dark:text-gray-300 text-sm bg-white dark:bg-gray-800 p-3 rounded-lg mt-4 opacity-0 transition-all duration-700 border border-gray-300 dark:border-gray-700"
+        >
+          No characters found. Start typing to see letter density.
+        </div>
+      </div>
+    </main>
+
+    <!-- Dark Mode Script -->
+    <script>
+      const toggleBtn = document.getElementById("toggleDark");
+      const body = document.body;
+
+      toggleBtn.addEventListener("click", () => {
+        body.classList.toggle("dark");
+        toggleBtn.textContent = body.classList.contains("dark")
+          ? "☀️ Light Mode"
+          : "🌙 Dark Mode";
+      });
+    </script>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
